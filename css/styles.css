@@ -17,4 +17,8 @@ body{
 
 .child-container{
     background-color: yellow;
+    font-size: 5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }

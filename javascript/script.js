@@ -19,7 +19,17 @@ const GameBoard = (function () {
   };
 
   const displayBoard = function () {
-    console.log(board);
+    const div = document.querySelectorAll(".child-container");
+    let i = 0;
+    let j = 0;
+    div.forEach((item) => {
+      item.textContent = board[i][j];
+      j++;
+      if (j == 3) {
+        j = 0;
+        i++;
+      }
+    });
   };
 
   return { clearBoard, updateBoard, displayBoard };
@@ -38,8 +48,17 @@ const createGrid = function () {
       let div = elementCreator("div", "class", "child-container");
       div.setAttribute("data-value", `${i}${j}`);
       appendElement(div, gridContainer);
+      addEventListnersTOElements(div);
     }
   }
+};
+
+const setValueOnClick = function (e) {
+  let index = e.target.getAttribute("data-value");
+  let [position1, position2] = index.split("");
+  value = "X";
+  GameBoard.updateBoard(position1, position2, value);
+  GameBoard.displayBoard();
 };
 
 const elementCreator = function (element, type, name) {
@@ -50,6 +69,10 @@ const elementCreator = function (element, type, name) {
 
 const appendElement = function (elementToAppend, appendTo) {
   appendTo.appendChild(elementToAppend);
+};
+
+const addEventListnersTOElements = function (element) {
+  element.addEventListener("click", setValueOnClick, { once: true });
 };
 
 createGrid();
