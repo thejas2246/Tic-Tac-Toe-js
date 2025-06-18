@@ -21,3 +21,14 @@ const Player = function (name) {
   let playerName = name;
   return { playerName };
 };
+
+const functionCreateGrid = function () {
+  const gridContainer = elementCreator("div", "class", "grid-container");
+  document.body.appendChild(gridContainer);
+};
+
+const elementCreator = function (element, type, name) {
+  let newElement = document.createElement(element);
+  newElement.setAttribute(type, name);
+  return newElement;
+};
