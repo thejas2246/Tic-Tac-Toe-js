@@ -4,8 +4,20 @@ const GameBoard = (function () {
     ["", "", ""],
     ["", "", ""],
   ];
-  return { board };
+
+  const clearBoard = function () {
+    let length = board.length;
+    for (let i = 0; i < length; i++) {
+      for (let j = 0; j < length; j++) {
+        board[i][j] = "";
+      }
+    }
+  };
+
+  return { board, clearBoard };
 })();
 
-GameBoard.board[0][1] = 2;
-console.log(GameBoard.board);
+const Player = function (name) {
+  let playerName = name;
+  return { playerName };
+};
