@@ -14,7 +14,15 @@ const GameBoard = (function () {
     }
   };
 
-  return { board, clearBoard };
+  const updateBoard = function (index1, index2, value) {
+    board[index1][index2] = value;
+  };
+
+  const displayBoard = function () {
+    console.log(board);
+  };
+
+  return { clearBoard, updateBoard, displayBoard };
 })();
 
 const Player = function (name) {
@@ -22,9 +30,16 @@ const Player = function (name) {
   return { playerName };
 };
 
-const functionCreateGrid = function () {
+const createGrid = function () {
   const gridContainer = elementCreator("div", "class", "grid-container");
   appendElement(gridContainer, document.body);
+  for (let i = 0; i < 3; i++) {
+    for (let j = 0; j < 3; j++) {
+      let div = elementCreator("div", "class", "child-container");
+      div.setAttribute("data-value", `${i}${j}`);
+      appendElement(div, gridContainer);
+    }
+  }
 };
 
 const elementCreator = function (element, type, name) {
@@ -37,4 +52,4 @@ const appendElement = function (elementToAppend, appendTo) {
   appendTo.appendChild(elementToAppend);
 };
 
-functionCreateGrid();
+createGrid();
