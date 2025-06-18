@@ -24,7 +24,7 @@ const Player = function (name) {
 
 const functionCreateGrid = function () {
   const gridContainer = elementCreator("div", "class", "grid-container");
-  document.body.appendChild(gridContainer);
+  appendElement(gridContainer, document.body);
 };
 
 const elementCreator = function (element, type, name) {
@@ -32,3 +32,9 @@ const elementCreator = function (element, type, name) {
   newElement.setAttribute(type, name);
   return newElement;
 };
+
+const appendElement = function (elementToAppend, appendTo) {
+  appendTo.appendChild(elementToAppend);
+};
+
+functionCreateGrid();
