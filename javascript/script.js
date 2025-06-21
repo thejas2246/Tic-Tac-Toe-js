@@ -61,6 +61,18 @@ const GameBoard = (function () {
         updateGameOverStatus();
       }
     }
+    if (
+      board[0][0] == nextPlayer &&
+      board[1][1] == nextPlayer &&
+      board[1][1] == nextPlayer
+    )
+      updateGameOverStatus();
+    if (
+      board[0][2] == nextPlayer &&
+      board[1][1] == nextPlayer &&
+      board[2][0] == nextPlayer
+    )
+      updateGameOverStatus();
   };
   const getGameOverStatus = function () {
     return gameOver;
