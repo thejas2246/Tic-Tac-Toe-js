@@ -11,7 +11,6 @@ const GameBoard = (function () {
     ["", "", ""],
     ["", "", ""],
   ];
-  let winner = "";
   let nextPlayer = "X";
   let gameOver = false;
   let gameTie = false;
@@ -49,7 +48,7 @@ const GameBoard = (function () {
       }
     });
   };
-
+  const currentPlayerRestart = () => (nextPlayer = "X");
   const checkWin = function () {
     let length = board.length;
     console.log(board);
@@ -85,6 +84,12 @@ const GameBoard = (function () {
   const getGameOverStatus = function () {
     return gameOver;
   };
+  const gameOverRestart = function () {
+    gameOver = false;
+  };
+  const tieRestart = function () {
+    gameTie = false;
+  };
   const updateGameOverStatus = function () {
     gameOver = true;
   };
@@ -107,6 +112,9 @@ const GameBoard = (function () {
       updateGameTieStatus();
     }
   };
+  const announceTie = function () {
+    console.log("Tie");
+  };
   const winnerGreetings = function () {
     console.log(
       nextPlayer == "X"
@@ -125,6 +133,10 @@ const GameBoard = (function () {
     checkTie,
     getGameTieStatus,
     winnerGreetings,
+    announceTie,
+    gameOverRestart,
+    tieRestart,
+    currentPlayerRestart,
   };
 })();
 
@@ -153,7 +165,7 @@ const setValueOnClick = function (e) {
     removeEventListener();
     GameBoard.winnerGreetings();
   } else if (GameBoard.getGameTieStatus()) {
-    console.log("Game tie");
+    GameBoard.announceTie();
   } else {
     GameBoard.updatePlayer();
   }
@@ -181,6 +193,27 @@ const removeEventListener = function () {
 };
 const playGame = function () {
   createGrid();
+  createRestartButton();
+};
+
+const createRestartButton = function () {
+  let webBody = document.body;
+  const restartButton = document.createElement("button");
+  restartButton.setAttribute("class", "restart-button");
+  restartButton.textContent = "Restart";
+  webBody.appendChild(restartButton);
+  restartButton.addEventListener("click", () => {
+    let element = document.querySelectorAll(".child-container");
+    GameBoard.clearBoard();
+    GameBoard.displayBoard();
+    GameBoard.gameOverRestart();
+    GameBoard.tieRestart();
+    GameBoard.currentPlayerRestart();
+    removeEventListener();
+    element.forEach((item) => {
+      addEventListenersTOElements(item);
+    });
+  });
 };
 
 playGame();
