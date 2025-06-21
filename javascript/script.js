@@ -51,7 +51,6 @@ const GameBoard = (function () {
   const currentPlayerRestart = () => (nextPlayer = "X");
   const checkWin = function () {
     let length = board.length;
-    console.log(board);
     for (let i = 0; i < length; i++) {
       if (
         board[i][0] == nextPlayer &&
@@ -113,10 +112,10 @@ const GameBoard = (function () {
     }
   };
   const announceTie = function () {
-    console.log("Tie");
+    alert("Tie");
   };
   const winnerGreetings = function () {
-    console.log(
+    alert(
       nextPlayer == "X"
         ? `${player1.playerName} won`
         : `${player2.playerName} won`
@@ -163,9 +162,9 @@ const setValueOnClick = function (e) {
   GameBoard.checkTie();
   if (GameBoard.getGameOverStatus()) {
     removeEventListener();
-    GameBoard.winnerGreetings();
+    setTimeout(GameBoard.winnerGreetings, 100);
   } else if (GameBoard.getGameTieStatus()) {
-    GameBoard.announceTie();
+    setTimeout(GameBoard.announceTie, 100);
   } else {
     GameBoard.updatePlayer();
   }

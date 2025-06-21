@@ -1,6 +1,5 @@
 body{
     display: flex;
-    justify-content: center;
     align-items: center;
     flex-direction: column;
     gap: 20px;
@@ -25,4 +24,17 @@ body{
     justify-content: center;
     align-items: center;
     border-radius: 10px;
+}
+.restart-button{
+    background-color:  rgb(80, 168, 245);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px ;
+    font-size: 1rem;
+}
+
+h1{
+    font-size: 3rem;
+    color: rgb(32, 32, 32);
 }
