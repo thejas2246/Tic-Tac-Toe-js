@@ -4,6 +4,16 @@ const GameBoard = (function () {
     ["", "", ""],
     ["", "", ""],
   ];
+  let winner = "";
+  let nextPlayer = "X";
+  let gameOver = false;
+  const updatePlayer = function () {
+    nextPlayer = nextPlayer == "X" ? "O" : "X";
+  };
+
+  const getNextPlayer = function () {
+    return nextPlayer;
+  };
 
   const clearBoard = function () {
     let length = board.length;
@@ -32,7 +42,42 @@ const GameBoard = (function () {
     });
   };
 
-  return { clearBoard, updateBoard, displayBoard };
+  const checkWin = function () {
+    let length = board.length;
+    console.log(board);
+    for (let i = 0; i < length; i++) {
+      if (
+        board[i][0] == nextPlayer &&
+        board[i][1] == nextPlayer &&
+        board[i][2] == nextPlayer
+      ) {
+        updateGameOverStatus();
+      }
+      if (
+        board[0][i] == nextPlayer &&
+        board[1][i] == nextPlayer &&
+        board[2][i] == nextPlayer
+      ) {
+        updateGameOverStatus();
+      }
+    }
+  };
+  const getGameOverStatus = function () {
+    return gameOver;
+  };
+  const updateGameOverStatus = function () {
+    gameOver = true;
+  };
+
+  return {
+    clearBoard,
+    updateBoard,
+    displayBoard,
+    updatePlayer,
+    getNextPlayer,
+    checkWin,
+    getGameOverStatus,
+  };
 })();
 
 const Player = function (name) {
@@ -48,7 +93,7 @@ const createGrid = function () {
       let div = elementCreator("div", "class", "child-container");
       div.setAttribute("data-value", `${i}${j}`);
       appendElement(div, gridContainer);
-      addEventListnersTOElements(div);
+      addEventListenersTOElements(div);
     }
   }
 };
@@ -56,9 +101,16 @@ const createGrid = function () {
 const setValueOnClick = function (e) {
   let index = e.target.getAttribute("data-value");
   let [position1, position2] = index.split("");
-  value = "X";
+  value = GameBoard.getNextPlayer();
   GameBoard.updateBoard(position1, position2, value);
   GameBoard.displayBoard();
+  GameBoard.checkWin();
+  console.log(GameBoard.gameOver);
+  if (GameBoard.getGameOverStatus()) {
+    removeEventListener();
+  } else {
+    GameBoard.updatePlayer();
+  }
 };
 
 const elementCreator = function (element, type, name) {
@@ -71,8 +123,20 @@ const appendElement = function (elementToAppend, appendTo) {
   appendTo.appendChild(elementToAppend);
 };
 
-const addEventListnersTOElements = function (element) {
+const addEventListenersTOElements = function (element) {
   element.addEventListener("click", setValueOnClick, { once: true });
 };
 
-createGrid();
+const removeEventListener = function () {
+  let removeElement = document.querySelectorAll(".child-container");
+  removeElement.forEach((item) => {
+    item.removeEventListener("click", setValueOnClick, { once: true });
+  });
+};
+const playGame = function () {
+  const player1 = Player("X");
+  const player2 = Player("O");
+  createGrid();
+};
+
+playGame();
