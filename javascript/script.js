@@ -1,3 +1,10 @@
+const Player = function (name) {
+  let playerName = name;
+  return { playerName };
+};
+
+const player1 = Player("player 1");
+const player2 = Player("player 2");
 const GameBoard = (function () {
   const board = [
     ["", "", ""],
@@ -7,6 +14,7 @@ const GameBoard = (function () {
   let winner = "";
   let nextPlayer = "X";
   let gameOver = false;
+  let gameTie = false;
   const updatePlayer = function () {
     nextPlayer = nextPlayer == "X" ? "O" : "X";
   };
@@ -64,7 +72,7 @@ const GameBoard = (function () {
     if (
       board[0][0] == nextPlayer &&
       board[1][1] == nextPlayer &&
-      board[1][1] == nextPlayer
+      board[2][2] == nextPlayer
     )
       updateGameOverStatus();
     if (
@@ -80,7 +88,32 @@ const GameBoard = (function () {
   const updateGameOverStatus = function () {
     gameOver = true;
   };
-
+  const updateGameTieStatus = function () {
+    gameTie = true;
+  };
+  const getGameTieStatus = function () {
+    return gameTie;
+  };
+  const checkTie = function () {
+    let spaceCount = 0;
+    for (let i = 0; i < board.length; i++) {
+      for (let j = 0; j < board.length; j++) {
+        if (board[i][j] == "") {
+          spaceCount++;
+        }
+      }
+    }
+    if (spaceCount == 0) {
+      updateGameTieStatus();
+    }
+  };
+  const winnerGreetings = function () {
+    console.log(
+      nextPlayer == "X"
+        ? `${player1.playerName} won`
+        : `${player2.playerName} won`
+    );
+  };
   return {
     clearBoard,
     updateBoard,
@@ -89,15 +122,13 @@ const GameBoard = (function () {
     getNextPlayer,
     checkWin,
     getGameOverStatus,
+    checkTie,
+    getGameTieStatus,
+    winnerGreetings,
   };
 })();
 
-const Player = function (name) {
-  let playerName = name;
-  return { playerName };
-};
-
-const createGrid = function () {
+const createGrid = function (player1, player2) {
   const gridContainer = elementCreator("div", "class", "grid-container");
   appendElement(gridContainer, document.body);
   for (let i = 0; i < 3; i++) {
@@ -117,9 +148,12 @@ const setValueOnClick = function (e) {
   GameBoard.updateBoard(position1, position2, value);
   GameBoard.displayBoard();
   GameBoard.checkWin();
-  console.log(GameBoard.gameOver);
+  GameBoard.checkTie();
   if (GameBoard.getGameOverStatus()) {
     removeEventListener();
+    GameBoard.winnerGreetings();
+  } else if (GameBoard.getGameTieStatus()) {
+    console.log("Game tie");
   } else {
     GameBoard.updatePlayer();
   }
@@ -146,8 +180,6 @@ const removeEventListener = function () {
   });
 };
 const playGame = function () {
-  const player1 = Player("X");
-  const player2 = Player("O");
   createGrid();
 };
 
